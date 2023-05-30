@@ -1,0 +1,332 @@
+module device
+{
+/*
+* 1. type + name + default_value + (namespace:default_prefix /device/scrubber/)
+* 2. type + name + default_value + namespace
+*/
+ros_params ScrubberParameters
+{
+    bool enable_device_limit true;                      // 使能设备约束
+    bool no_change_device_status true;                  // 切换手自动时不改变设备状态
+    bool backward_notliftup_brush false;                // 后退不抬刷盘
+    bool enable_filter true;                            // 使能过滤电机
+    bool exist_filter false;                            // 过滤功能使能&button要不要显示
+    bool pure_water_tank true;                          // 设备是否具有纯水箱
+    bool enable_left_spread true;                       // 使能左边刷：112
+    bool enable_right_spread true;                      // 使能右边刷：112
+    bool enable_brush_lift_motor true;                  // 使能刷盘抬升电机
+    bool enable_rolling_brush_lift_motor true;          // 使能滚刷抬升电机
+    bool enable_rolling_brush_self_adaption false;      // 使能滚刷自适应: 区分 滚刷高度 or 清洁压力
+    bool enable_brush_position_self_adjust true;        // 滚刷/盘刷自调节功能开关
+    bool enable_disc_brush_self_adjust false;           // 盘刷自调节功能开关
+    bool enable_side_brush_lift_motor true;             // 使能边刷抬升电机
+    bool enable_brush_motor true;                       // 使能刷盘电机
+    bool enable_rolling_brush_motor true;               // 使能滚刷电机
+    bool enable_side_brush_motor true;                  // 使能边刷电机
+    bool enable_squeegee_lift_motor true;               // 使能尘推抬升电机
+    bool enable_squeegee_motor true;                    // 使能吸风
+    bool enable_valve true;                             // 使能喷水阀门
+    bool enable_spray_motor true;                       // 使能喷水电机
+    bool enable_detergent_motor true;                   // 使能蠕动泵
+    bool enable_mist_spray true;                        // 使能喷雾
+    bool enable_spray_detergent true;                   // 使能喷洗涤剂
+    bool exist_triple_valve false;                      // 是否使用三通阀: true:使用三通阀  false:排污泵过滤泵单独控制
+    bool enable_outleting false;                        // 使能排污
+    bool enable_stir_motor true;                        // 使能搅拌电机
+    bool enable_dust_push false;                        // 使能尘推
+    bool need_control_roller_brush_spin_level false;    // 需要单独控制滚刷转速 75ADD
+    bool enable_brush_low_current_inspect true;         // 使能滚刷低未安装检测
+    bool enable_brush_high_current_inspect false;       // 使能滚刷缠绕检测
+    bool enable_disinfection_storage_warning false;     // 使能消杀液放置时间过长告警
+    bool enable_manual_repalce_brush true;              // 使能人为驱动换滚刷
+    bool enable_brush_type_detection false;             // 使能刷体自检
+    bool enable_neg_voltage_check true;                 // 使能负压
+    bool enable_get_device_limits true;                 // 获取设备限制开关
+    bool enable_squeegee_down_check true;               // 使能吸水扒监测
+    bool enable_brush_motor_off_while_place_rotating true;  // 原地旋转轮印优化动作时是否关闭滚刷/边刷电机
+    bool enable_intermit_water_spray false;             // 使能间歇性喷水
+    bool enable_infiltration false;                     // 浸润开关
+    bool enable_send_filter_motor false;                // 是否是上位机控制过滤
+    bool timeout_stop_filter false;                    // 过滤超时是否停止过滤
+    bool new_mcu_versions false /device/set_command/new_mcu_versions; // 下位机是否是林克斯版本
+    bool software_control_filter_motor false;          // 是否软件控制过滤
+    bool keep_beeping false;                           // 是否保持蜂鸣器长响
+    bool is_pnc_control_speed_limit false;              // 是否由pnc控制限速
+    bool enable_read_rfid false;                        // 读取rfid功能开关
+    bool enable_spin_dry_water true;                    // 甩干开关
+    bool enable_device_new_act_within_task true;        // 任务内避障时设备新行为开关
+    bool brush_spin_level_and_speed_fitting false;      // 盘刷转速自适应开关, true: 使用新线速度拟合策略, false: 使用老拟合策略
+    bool water_level_and_speed_fitting false;           // 新水量自适应开关
+    bool front_rolling_brush_reverse false;
+    bool rear_rolling_brush_reverse false;
+
+    int rear_device_type 0;                             // 后部设备类型 0: 尘推, 1: 吸水扒
+    int dust_push_type 0;                               // 尘推类型 0: 普通尘推, 1: 滚动尘推
+    int squeegee_type 0;                                // 吸水扒类型 0: 软胶吸水扒, 1: 滚轮吸水扒
+    int brush_type 0;                                   // 0: 盘刷, 1: 滚刷
+    int brush_down_type 0 /device/mcu/brush_down_type;  // 0: 非霍尔, 1: 霍尔
+    int double_rolling_brush_type 0;                    // 滚刷类型 0: 双滚刷, 1: 滚刷 + 布刷
+    int mist_spray_type 0;                              // 喷雾类型 0:关闭, 1:消杀, 2:香薰
+    int flush_water_percent 100;                          // 一键冲水：喷水水量
+    int pre_task_spray_water_level 10;                            // 任务前浸润水量
+    int infiltration_spray_water_level_v1 28;                     // 浸润期间水量 小水量泵
+    int infiltration_spray_water_level_v2 10;                     // 浸润期间水量 其他
+    int rolling_brush_self_cleaning_increased_level 15;           // 滚刷自洁增加的速率百分比，默认值15
+    int polishing_pad_replace_method 1;
+    int polishing_pad_replace_method1_reverse_spin_value 100;  // 抛光机自动换垫方案1反转卸垫转速
+    int polishing_pad_replace_method2_reverse_spin_value 8;  // 抛光机自动换垫方案2反转卸垫转速
+    int polishing_pad_replace_forward_spin_value 100;      // 抛光机自动换垫正转卡垫转速
+    int polishing_pad_replace_retry_times 3;             // 抛光机自动换垫重试次数
+    int polishing_spray_method 0;                        // 喷药方案：0-柱塞泵；1-注射泵；
+    int polishing_spray_level 2;                         // 喷药等级：百分比
+    int polishing_flush_level 100;                       // 急速喷药等级：百分比
+    int polishing_supply_level 3;                        // 补药等级：百分比
+    int polishing_dredge_times 3;                        // 一键疏通次数
+    int rolling_brush_front_type 0;                      // 前滚刷类型：0：V型刷, 1：布刷, 2：全毛刷
+    int rolling_brush_after_type 0;                      // 前滚刷类型：0：V型刷, 1：布刷, 2：全毛刷
+    int spin_level_adjusting_brush_position_not_hybrid 25;  // 滚刷高度自调节时滚刷转速-非混合驱控版
+    int spin_level_adjusting_brush_position_hybrid 10;   // 滚刷高度自调节时滚刷转速-混合驱控版
+    int spin_level_adjusting_brush_position 26;          // 盘刷高度自调节时盘刷转速
+    int outlet_valve_pwm 100;                            // 排污泵占空比
+
+    int target_current_tolerance 1;        // 滚刷高度自调节时, 滚刷电流宽容度
+    int brush_current_tolerance 3;         // 盘刷高度自调节时, 盘刷电流宽容度
+    int brush_current_diff_tolerance 20;   // 盘刷高度自调节时, 左右盘刷电流差值宽容度
+    int rolling_brush_max_position 40;     // 滚刷高度自调节时, 滚刷最大行程值
+    int rolling_brush_min_position 25;     // 滚刷高度自调节时, 滚刷最小行程值
+    int brush_max_position 40;             // 盘刷高度自调节时, 盘刷最大行程值
+    int brush_min_position 18;             // 盘刷高度自调节时, 盘刷最小行程值
+    int detergent_motor_duty_ratio_min 12;            // 油污泵工作最小占空比
+    int detergent_motor_duty_ratio_max 60;            // 油污泵工作最大占空比
+    int dust_push_liquid_volume 30;                            // 尘推液量
+    int rolling_brush_motor_front 10;                          //前滚刷转速值
+    int rolling_brush_motor_after 10;                          //后滚刷转速值
+    int dry_spin_speed_brush_front 36;                         // 甩水时前滚刷转速值
+    int dry_spin_speed_brush_after 20;                         // 甩水时后滚刷转速值
+    int fan_pwm_during_drain 60;                              // 甩干时的吸风占空比
+    int front_brush_pwm_during_drain 26;                      // 甩干时的前滚刷占空比
+    int after_brush_pwm_during_drain 26;                      // 甩干时的前滚刷占空比
+    int clear_water_sensor_num 4;                             // 清水箱浮子开关个数
+    int dirty_water_sensor_num 4;                             // 污水箱浮子开关个数
+    int filter_motor_pwm 95;                                  // 过滤电机占空比
+    int fix_fan_level 40;                                     // 原地转向时最大吸风等级
+    int over_limit_switch_threshold_duration 5;               // 电压异常(偏高)持续时间
+    int beneath_limit_switch_threshold_duration 5;            // 电压异常(偏低)持续时间
+    int suction_pressure_beneath_limit_floating_ratio 20;     // 电压异常(轻微偏低)上浮比例（0->100）单位%
+    int auxiliary_brush_type 0;                               // 0: 无, 1: 滚刷
+    int fan_level_while_keeping_suction 80;                   // 延时关吸风期间，强度可配
+    int fan_level_while_rotating 80;                          // 车子转弯时吸风强度
+    int fan_level_during_tasks 90;                            // 子任务间吸风占空比
+    int spray_abnormal_check_ratio 50;                        // 喷水异常ratio
+    int water_detergent_ratio_min 50;                         // 75海外油污水清洁剂比例最小值
+    int water_detergent_ratio_max 200;                        // 75海外油污水清洁剂比例最大值
+    int dredge_pipe_detergent_level 10;                       // 管道疏通,药剂比例
+    int filter_motor_action_type 1;                           // 过滤电机的设备行为类型
+    int sewage_empty_percent 0 /strategy/gs_work_station/dirty_water_empty_percent; // 工作站排污阈值
+    int killing_foam_pump_level 20;                           // 消泡剂等级值
+    int water_level_min_accuracy 5;
+
+    double squeegee_down_time 0.0;                       // 吸水扒放到位需要的时间，单位：秒
+    double squeegee_motor_running_time 0.0;              // 吸风开启到最大需要的时间，单位：秒
+    double squeegee_down_check_wait_device_time 2.0;     // 吸水扒监测时，需要等待设备时间，单位：秒
+    double squeegee_down_check_continuous_time 3.0;      // 吸水扒监测，持续对比时间，单位：秒
+    double motor_work_min_speed 0.06;                    // 触发设备电机工作的最小速度
+    double motor_work_min_angle 0.06;                    // 触发设备电机工作的最小角度
+    double mist_spray_work_min_speed 0.06;               // 触发喷雾电机工作的最小线速度
+    double mist_spray_work_max_angle 0.06;               // 触发喷雾电机工作的最大角速度
+    double backward_liftup_device_speed 0.1;             // 触发抬设备的后退速度
+    // 寿命
+    double filter_usage_alert 20.0;                      // 滤芯使用寿命
+    double brush_usage_alert 20.0;                       // 刷盘使用寿命
+    double rolling_brush_usage_alert 20.0;               // 滚刷使用寿命
+    double cloth_brush_usage_alert 20.0;                 // 布刷使用寿命
+    double left_side_brush_usage_alert 20.0;             // 左边刷使用寿命
+    double right_side_brush_usage_alert 20.0;            // 右边刷使用寿命
+    double suction_blade_usage_alert 20.0;               // 吸水扒使用寿命
+    double roller_squeegee_usage_alert 20.0;             // 滚轮吸水扒使用寿命
+    double soft_squeegee_usage_alert 20.0;               // 软胶吸水扒使用寿命
+    double dust_push_usage_alert 20.0;                   // 尘推布使用寿命
+    double ordinary_dust_push_usage_alert 20.0;          // 普通尘推使用寿命
+    double left_brush_usage_alert 20.0;                  // 左盘刷使用寿命
+    double right_brush_usage_alert 20.0;                 // 左盘刷使用寿命
+    double front_rolling_brush_usage_alert 20.0;         // 前滚刷使用寿命
+    double rear_rolling_brush_usage_alert 20.0;          // 后滚刷使用寿命
+
+    double keep_flush_water_time 30.0 /device/scrubber/keep_flush_water;  // 一键冲水：低于最低浮子后倒计时间
+    double water_level_opt_interval 9.0;                 // 小水量精度优化：精度优化时间单位，单位：秒
+    double water_pump_rest_max_time 600.0;               // 水泵空闲的最大时间
+    double infiltration_duration 30.0;                   // 浸润时长
+    double secondary_water_low_level_continued_duration 3.0;  // 副水箱低液位持续时间
+    double pre_task_spray_duration 0.0;                  // 作务前浸润时长，单位：秒
+    double keep_squeegee_suction_time 10.0 /device/scrubber/keep_squeegee_suction;  // 延时抬吸水扒时间，T1，单位：秒
+    double keep_suction_time 10.0 /device/scrubber/keep_suction;  // 延时关吸风附加时间，T2，单位：秒
+    double keep_rotating_brush_time 10.0;                            // 车子卡住后，延时关滚刷边刷时间
+    double rolling_brush_spin_dry_time 60.0;
+    double dust_push_clean_max_idle_duration 0.0;                    // 尘推自洁空闲时间
+    double dust_push_clean_max_work_duration 5.0;                    // 尘推自洁工作时间
+    double rolling_brush_clean_max_idle_duration 60.0;               // 滚刷自洁空闲时间
+    double rolling_brush_clean_max_work_duration 300.0;              // 滚刷自洁工作时间
+    double mist_box_low_level_continued_duration 10.0;               // 消杀低液位持续时间
+    double mist_bag_low_level_continued_duration 10.0;               // 消杀水箱低液位持续时间
+    double disinfection_storage_max_time 72.0;                       // 消毒液放置的最大时间
+    double brush_position_adjust_interval_time 168.0;                // 滚刷自适应间隔时间
+    double roller_brush_low_current_threshold 1.2;                   // 滚刷低电流阈值
+    double roller_brush_low_current_inspect_continued_duration 5;    // 滚刷低电流持续检测时间
+    double disinfectant_level_low_cont_duration 5;     // 消毒液低液位持续时间
+    double mist_box_low_low_level_duration 3;          // 雾化箱低低液位持续时间
+    double mist_box_temperature_high 60;               // 雾化箱高温阈值
+    double disinfectant_supply_timeout 600;            // 消毒液补液超时时间
+    double spray_detergent_increase_ratio 2;           // 75片状油污可喷药增量与单位距离米的比例
+    double spray_detergent_decrease_rate 0.3;          // 75片状油污可喷药减量与单位时间秒的比例
+    double spray_detergent_cooling_duration 1;         // 75片状油污开关冷却时间
+    double polishing_pad_down_delay 0.0;               // 抛光机刷盘放下延迟时间
+    double polishing_pad_replace_method1_reverse_duration 5.0;  // 抛光机自动换垫方案1反转卸垫持续时间
+    double polishing_pad_replace_method2_reverse_duration 5.0;  // 抛光机自动换垫方案2反转卸垫持续时间
+    double polishing_pad_replace_cooling_duration 2.0;      // 抛光机自动换垫冷却持续时间
+    double polishing_pad_replace_forward_duration 5.0;      // 抛光机自动换垫正转卡垫持续时间
+    double polishing_supply_duration 10.0;                  // 补药时间
+    double polishing_spray_timeout 60.0;                    // 喷药超时时间
+    double polishing_supply_timeout 60.0;                   // 补药超时时间
+    double polishing_auto_supply_wait_stir_duration 60;     // 补药时间
+    double polishing_spray_electric_relay 60.0;             // 接液盒打开时间
+    double polishing_spray_delay_duration 0.0;              // 喷药延迟时间
+    double polishing_spray_vibration_delay_duration 5;      // 喷药震动延迟时间
+    double polishing_spray_vibration_duration 5;            // 喷药震动持续时间
+    double polishing_spray_reverse_duration 3.0;            // 喷雾电机反向间隔时间
+    double rolling_brush_shift_position 17;                 // 滚刷换刷档位置
+    double rolling_brush_shift_minus_position 3.0;          // 滚刷换刷档-被减行程值
+    double rolling_brush_position_self_adjust_time 300;     // 滚刷高度自调节 超时时长 默认300s
+    double rolling_brush_self_adjust_target_position 30;    // 滚刷高度自调节时 初始调节高度
+    double brush_position_self_adjust_initial_position 18;  // 盘刷高度自调节时 初始调节高度
+    double brush_position_self_adjust_wait_current_time 3.0;  // 滚刷高度自调节时 等待读取电流时间
+    double rear_rolling_brush_max_current 35;  // 滚刷高度自调节时 后滚刷最大电流阈值
+    double rolling_brush_min_current 5;        // 滚刷高度自调节时 滚刷最小电流阈值
+    double brush_max_current 80;               // 盘刷高度自调节时 盘刷最大电流阈值
+    double steering_overload_clear_duration 3.0;      // 转向电机过载状态清理时间
+    double steering_overload_wait_duration 2.0;       // 转向电机过载状态等待时间
+    double steering_overload_recovery_duration 10;    // 转向电机过载状态恢复时间
+    double brush_overload_clear_duration 3.0;         // 刷盘电机过载状态清理时间
+    double brush_overload_wait_duration 2.0;          // 刷盘电机过载状态等待时间
+    double brush_overload_recovery_duration 10;       // 刷盘电机过载状态恢复时间
+    double dust_push_liquid_reverse_duration 600;     // 尘推加液间隔时间
+    double dust_push_liquid_supply_duration 3.0;      // 尘推加液时间
+    double mist_spray_rest_working_duration 5;        // 静止时喷雾/香持续时间
+    double mist_liquid_supply_timeout_duration 60;    // V3.0消杀补液超时时间
+    double voltage_checked_rest_duration 30;
+    double enable_voltage_checked_min_speed 0;
+    double brush_steering_motor_overload_warning_time 15.0; // 刷盘或转向电机过载延时
+    double filter_motor_max_time 360.0;                // 过滤电机过滤时间
+    double brush_spin_min_vel 0.15;                    // 不是原地旋转，降低刷盘转速的odom速度限制值
+    double timeout_disappear_time 1800.0;              // 过滤电机过滤超时时间
+    double spray_defoamer_waiting_time 30.0;           // 喷消泡剂等待时间
+
+    double stop_fan_curve_radius 1.0; // 停止吸风的最小曲率半径
+    double water_level_ratio 1.0 /public/hardware_conf/water_level_ratio; // 调节喷水量比率
+    double yield_level_ratio 1.0 /public/hardware_conf/yield_level_ratio; // 水量系数
+    double spray_motor_ratio 1.0 /public/hardware_conf/spray_motor_ratio; // 喷水量系数
+    double read_rfid_time 3.0;         // 读取RFID信息时间
+    double charger_stable_time 3.0;    // 充电滤波时间
+    double spray_in_advance_duration 3.0;    // 提前喷药持续时间
+    double steering_wheel_status_stable_time 5.0;  // 75方向盘抬升/下放 滤波时间
+    double pre_turn_on_device_distance 0.8;  // 提前开启设备距离,s线限速改为缓慢减速至0速，到起点前提前开启设备
+    double angle_for_enhance_fan_level 0.05; // 车子转弯时增强吸风--角速度
+    double linear_speed_for_enhance_fan_level 0.05; // 车子转弯时增强吸风--退出时线速度
+    double rotate_stable_time 2.0; // 车子转弯持续时间
+    double op_device_path_distance_within_task 3.0;
+    double open_device_distance_during_tasks 10.0;  // 任务中开设备持续的距离
+    double delay_suction_off_time_during_tasks 2.0; // 任务中吸风延迟关的时间
+    double water_level_tolerance 0.2;
+    double water_level_adc_continued_duration 5.0; //水量电压滤波时间
+    double spray_abnormal_check_duration 120.0; //喷水异常检测时间
+    double dredge_pipe_time 5.0;                // 管道疏通时间，单位秒
+    double dredge_pipe_duration 86400.0;            // 管道疏通周期
+    double workstation_lift_motor_close_time 6.0;            // 5.0对桩：加水门盖关闭超时时间
+    double change_brush_spin_level_stable_time 2.0;          // 速度达到对应区间2S才切换刷盘转速
+    double change_water_level_stable_time 2.0;               // 速度达到对应区间2S才切换水量
+    double killing_foam_spray_time 30.0;                     // 喷消泡剂时间
+    double filter_motor_max_accumulate_time 3600.0;          // 过滤电机最大总计过滤时间
+    double device_operation_timeout_time 20.0;
+
+    string sensor_type "" sensor_type;
+
+    vector<int>() water_level_setting "20,60,100";                     // 喷水量等级设置
+    vector<int>() fan_level_setting "20,60,100";                       // 吸风等级设置
+    vector<int>() dust_push_spin_level_setting "20,60,100";            // 尘推旋转等级设置
+    vector<int>() dust_push_clean_spin_level_setting "20,60,100";      // 尘推自洁旋转等级设置
+    vector<int>() brush_pressure_level_setting "45,45,45";             // 刷盘压力等级设置
+    vector<int>() rolling_brush_pressure_level_setting "8,11,14";      // 滚刷压力等级设置
+    vector<int>() v_shape_brush_pressure_level_setting "15,15,15";     // v型刷压力等级设置
+    vector<int>() cloth_brush_pressure_level_setting "15,15,15";       // 布刷压力等级设置
+    vector<int>() full_hair_brush_pressure_level_setting "15,15,15";   // 全毛刷压力等级设置
+    vector<int>() brush_position_level_setting "25,23,21";             // 刷盘位置等级设置
+    vector<int>() side_brush_position_level_setting "25,23,21";        // 边刷位置等级设置
+    vector<int>() rolling_brush_position_level_setting "25,23,21";     // 滚刷位置等级设置
+    vector<int>() brush_spin_level_setting "20,60,100";                // 刷盘旋转等级设置
+    vector<int>() rolling_brush_spin_level_setting "20,60,100";        // 滚刷旋转等级设置
+    vector<int>() rolling_brush_front_spin_level_setting "20,60,100";  // 前滚刷旋转等级设置
+    vector<int>() rolling_brush_after_spin_level_setting "20,60,100";  // 后滚刷旋转等级设置
+    vector<int>() side_brush_pressure_level_setting "20,60,100";       // 边刷压力等级设置
+    vector<int>() side_brush_spin_level_setting "20,60,100";           // 边刷旋转等级设置
+    vector<int>() mist_spray_distance_level_setting "20,60,100";       // 喷雾距离等级设置
+    vector<int>() suction_pressure_limit_level_setting "60,80,100";    // 风机占空比
+    vector<int>() intermit_water_spray_time_setting "1,1";             // 间歇性喷水时间配置
+    vector<int>() v_shape_brush_current_level_setting "19,19,19";         // 滚刷高度自调节, v型刷目标电流
+    vector<int>() cloth_brush_current_level_setting "19,19,19";           // 滚刷高度自调节, 布刷目标电流
+    vector<int>() full_hair_brush_current_level_setting "19,19,19";       // 滚刷高度自调节, 全毛刷目标电流
+    vector<int>() brush_current_level_setting "45,45,45";                 // 盘刷高度自调节, 目标电流
+    vector<int>() aromatherapy_concentration_level_setting "40,20,45,10,60,10";    // 香薰浓度配置（单位：秒）
+    vector<int>() spray_water_detergent_setting "50,20,10";               // 水：除油剂 比
+    vector<int>() clean_water_percentage_setting "0,3,10,20,40,60,80,90,100";
+    vector<int>() sewage_percentage_setting "0,3,10,20,40,60,80,90,100";
+    vector<int>() spray_motor_pwm_setting "5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95";
+    vector<int>() spray_motor_water_flow_setting "0,200,400,644,710,862,1000,1176,1248,1374,1518,1734,1848,1984,2134,2244,2328,2430,2610,2700";
+    vector<int>() water_flow_setting "650,1250,1800"; // 喷水流量等级设置
+    vector<int>() dust_push_rolling_brush_front_spin_level_setting "60,80,100";  // 尘推
+    vector<int>() dp_standard_rolling_brush_pressure_level_setting "30,40,50";
+    vector<int>() dp_power_rolling_brush_pressure_level_setting "30,40,50";
+    vector<int>() dp_super_rolling_brush_pressure_level_setting "30,40,50";
+    vector<int>() dust_push_side_brush_spin_level_setting "40,60,80";
+
+    vector<int>() clean_rolling_brush_front_spin_level_setting "60,80,100";  //清扫
+    vector<int>() clean_standard_rolling_brush_pressure_level_setting "30,40,50";
+    vector<int>() clean_power_rolling_brush_pressure_level_setting "30,40,50";
+    vector<int>() clean_super_rolling_brush_pressure_level_setting "30,40,50";
+    vector<int>() clean_side_brush_spin_level_setting "40,60,80";
+
+    vector<int>() wash_rolling_brush_front_spin_level_setting "60,80,100";  // 清洗
+    vector<int>() wash_standard_rolling_brush_pressure_level_setting "30,40,50";
+    vector<int>() wash_power_rolling_brush_pressure_level_setting "30,40,50";
+    vector<int>() wash_super_rolling_brush_pressure_level_setting "30,40,50";
+    vector<int>() wash_side_brush_spin_level_setting "40,60,80";
+    vector<int>() wash_water_level_setting "11,14,19";
+    vector<int>() wash_fan_level_setting "40,50,60";
+    
+    vector<int>() vacuum_rolling_brush_front_spin_level_setting "60,80,100";  // 吸尘
+    vector<int>() vacuum_standard_rolling_brush_pressure_level_setting "30,40,50";
+    vector<int>() vacuum_power_rolling_brush_pressure_level_setting "30,40,50";
+    vector<int>() vacuum_super_rolling_brush_pressure_level_setting "30,40,50";
+    vector<int>() vacuum_side_brush_spin_level_setting "40,60,80";
+    vector<int>() vacuum_fan_level_setting "20,60,100";
+    
+    vector<double>() suction_pressure_over_limit_voltage_setting "1.2, 1.35, 1.5";     // 吸风机堵塞时电压偏高阈值
+    vector<double>() suction_pressure_beneath_limit_voltage_setting "1.07, 1.1, 1.15";  // 电压偏低告警阈值
+    vector<double>() detergent_flow_setting "0,0,7.7,18.9,28.8,38.7,48.9,58.6,70.2,80.9,87.7";                   // 每分钟油污清洁剂量 10~100占空比(g/min)
+    vector<double>() detergent_water_flow_setting "0,300,600,900,1200,1500,1800,2100,2400,2700,3000";             // 每分钟清水量 10~100占空比(g/min)
+    vector<double>() speed_level_setting "0.6,0.8,0.9,1.2" /strategy/goal_base/speed_level_setting;                      // 清洁速度
+    vector<double>() water_yield_level "0.6,0.8,0.9";
+    vector<double>() clean_water_voltage_setting "10,9.7,9.5,9.0,8.7,8.5,8.0,7.7,7.0";
+    vector<double>() sewage_voltage_setting "10,9.7,9.5,9.0,8.7,8.5,8.0,7.7,7.0";
+    vector<double>() brush_spin_level_fit_vel "0.0,0.15,0.4,0.8"; // 清洁速度分段: 默认 [0.15,0.4,0.8] m/s
+    vector<double>() brush_spin_level_ratio "0.3,0.5,0.7,1.0"; // 清洁速度对应刷盘转速比率:  默认 [0.3,0.5,0.7]
+    vector<double>() new_water_level_fit_vel "0.0,0.15,0.4,0.8"; // 清洁速度分段: 默认 [0.15,0.4,0.8] m/s
+    vector<double>() new_water_level_ratio "0.0,0.4,0.7,1.0"; // 清洁速度对应水量比率:  默认 [0,0.4,0.7]
+    vector<double>() detergent_slope_setting "8.6,8.3,8.01,7.73,7.43,7.13";
+    vector<double>() detergent_offset_setting "-113,-117.64,-121.1,-138.61,-155,-172";
+
+    //清洁能力
+    vector<string>() cleaning_ability_wash_settings "\"stain\", \"garbage\"";
+    vector<string>() cleaning_ability_dust_push_settings "\"garbage\"";
+    vector<string>() cleaning_ability_sweep_settings "\"garbage\"";
+
+};
+};
