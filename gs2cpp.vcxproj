@@ -165,6 +165,7 @@
     <ClCompile Include="src\parse.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".gitignore" />
     <None Include="scrubber_parameters.gaussian" />
     <None Include="include\flex_bison\gaussian.l" />
     <None Include="include\flex_bison\gaussian.y" />

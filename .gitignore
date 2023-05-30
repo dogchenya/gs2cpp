@@ -1,0 +1,9 @@
+﻿.idea
+.vscode
+.vs
+Debug
+bazel-*
+output/
+x86
+x64
+Win32

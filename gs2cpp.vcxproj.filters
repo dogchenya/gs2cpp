@@ -96,5 +96,6 @@
       <Filter>头文件\flex_bison</Filter>
     </None>
     <None Include="scrubber_parameters.gaussian" />
+    <None Include=".gitignore" />
   </ItemGroup>
 </Project>
