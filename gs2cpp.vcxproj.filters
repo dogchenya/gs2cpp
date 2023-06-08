@@ -54,6 +54,7 @@
     <ClInclude Include="include\gs_option.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="scrubber_parameters.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\parse.cpp">
@@ -97,5 +98,8 @@
     </None>
     <None Include="scrubber_parameters.gaussian" />
     <None Include=".gitignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
   </ItemGroup>
 </Project>

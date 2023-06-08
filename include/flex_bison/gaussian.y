@@ -31,6 +31,7 @@ using namespace std;
 %token GAUSSIAN_MAP
 %token GAUSSIAN_NAMESPACE
 %token GAUSSIAN_ROS_NAMESPACE
+%token GAUSSIAN_PARAM_CALLBACK
 %token GAUSSIAN_INTERFACE
 %token GAUSSIAN_IDENTIFIER
 %token GAUSSIAN_OUT
@@ -651,6 +652,27 @@ ros_params_type_id
         $$ = 0;
     }
 }
+| type_id const_initializer GAUSSIAN_IDENTIFIER GAUSSIAN_IDENTIFIER
+{
+    RosParamsPtr np = std::dynamic_pointer_cast<RosParams>(g_parse->currentContainer());
+    if(np)
+    {
+        TypeIdPtr tPtr   = std::dynamic_pointer_cast<TypeId>($1);
+        ConstGrammarPtr sPtr = std::dynamic_pointer_cast<ConstGrammar>($2);
+        g_parse->checkConstValue(tPtr, sPtr->t);
+        StringGrammarPtr ident = std::dynamic_pointer_cast<StringGrammar>($3);
+        tPtr->setNameSp(ident->v);
+        tPtr->setDefault(sPtr->v);
+        StringGrammarPtr cb = std::dynamic_pointer_cast<StringGrammar>($4);
+        tPtr->setCbName(cb->v);
+        np->addTypeId(tPtr);
+        $$ = std::dynamic_pointer_cast<GrammarBase>($1);
+    }
+    else
+    {
+        $$ = 0;
+    }
+}
 |type_id const_initializer GAUSSIAN_ROS_NAMESPACE
 {
     RosParamsPtr np = std::dynamic_pointer_cast<RosParams>(g_parse->currentContainer());
@@ -662,6 +684,46 @@ ros_params_type_id
         StringGrammarPtr ident = std::dynamic_pointer_cast<StringGrammar>($3);
         tPtr->setNameSp(ident->v);
         tPtr->setDefault(sPtr->v);
+        np->addTypeId(tPtr);
+        $$ = std::dynamic_pointer_cast<GrammarBase>($1);
+    }
+    else
+    {
+        $$ = 0;
+    }
+}
+| type_id const_initializer GAUSSIAN_ROS_NAMESPACE GAUSSIAN_PARAM_CALLBACK
+{
+    RosParamsPtr np = std::dynamic_pointer_cast<RosParams>(g_parse->currentContainer());
+    if(np)
+    {
+        TypeIdPtr tPtr   = std::dynamic_pointer_cast<TypeId>($1);
+        ConstGrammarPtr sPtr = std::dynamic_pointer_cast<ConstGrammar>($2);
+        g_parse->checkConstValue(tPtr, sPtr->t);
+        StringGrammarPtr ident = std::dynamic_pointer_cast<StringGrammar>($3);
+        tPtr->setNameSp(ident->v);
+        tPtr->setDefault(sPtr->v);
+        StringGrammarPtr cb = std::dynamic_pointer_cast<StringGrammar>($4);
+        tPtr->setCbName(cb->v);
+        np->addTypeId(tPtr);
+        $$ = std::dynamic_pointer_cast<GrammarBase>($1);
+    }
+    else
+    {
+        $$ = 0;
+    }
+}
+| type_id const_initializer GAUSSIAN_PARAM_CALLBACK
+{
+    RosParamsPtr np = std::dynamic_pointer_cast<RosParams>(g_parse->currentContainer());
+    if(np)
+    {
+        TypeIdPtr tPtr   = std::dynamic_pointer_cast<TypeId>($1);
+        ConstGrammarPtr sPtr = std::dynamic_pointer_cast<ConstGrammar>($2);
+        g_parse->checkConstValue(tPtr, sPtr->t);
+        tPtr->setDefault(sPtr->v);
+        StringGrammarPtr cb = std::dynamic_pointer_cast<StringGrammar>($3);
+        tPtr->setCbName(cb->v);
         np->addTypeId(tPtr);
         $$ = std::dynamic_pointer_cast<GrammarBase>($1);
     }
@@ -1240,6 +1302,9 @@ keyword
 {
 }
 | GAUSSIAN_ROS_NAMESPACE
+{
+}
+| GAUSSIAN_PARAM_CALLBACK
 {
 }
 | GAUSSIAN_INTERFACE

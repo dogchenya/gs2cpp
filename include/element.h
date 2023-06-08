@@ -1,15 +1,16 @@
 ﻿#ifndef _ELEMENT_H_
 #define _ELEMENT_H_
 
-#include <iostream>
-#include <string>
-#include <vector>
 #include <algorithm>
+#include <iostream>
 #include <iterator>
 #include <map>
-#include <stack>
-#include <sstream>
 #include <memory>
+#include <sstream>
+#include <stack>
+#include <string>
+#include <vector>
+
 #include "errno.h"
 
 using namespace std;
@@ -93,9 +94,9 @@ typedef std::shared_ptr<ConstGrammar> ConstGrammarPtr;
 class Type : virtual public GrammarBase {
  public:
   /**
-     * 构造函数
-     * @param Type
-     */
+   * 构造函数
+   * @param Type
+   */
   Type() : _size(0), _array(false), _pointer(false){};
 
   //是否简单类型
@@ -141,49 +142,49 @@ class Builtin : public Type {
   };
 
   /**
-     * 构造函数
-     * @param kind
-     */
+   * 构造函数
+   * @param kind
+   */
   Builtin(Kind kind, bool isUnsigned);
 
   /**
-     * 类型
-     *
-     * @return Kind
-     */
+   * 类型
+   *
+   * @return Kind
+   */
   Kind kind() const;
 
   /**
-     * 是否是简单类型
-     *
-     * @return bool
-     */
+   * 是否是简单类型
+   *
+   * @return bool
+   */
   bool isSimple() const;
 
   /**
-     * 是否是unsined类型
-     *
-     * @return bool
-     */
+   * 是否是unsined类型
+   *
+   * @return bool
+   */
   bool isUnsigned() const { return _isUnsigned; }
 
   /**
-     * 设置是unsined类型
-     *
-     * @return bool
-     */
+   * 设置是unsined类型
+   *
+   * @return bool
+   */
   void setUnsigned(bool isUnsigned = false) { _isUnsigned = isUnsigned; }
 
   /**
-     * 缺省值
-     *
-     * @return string
-     */
+   * 缺省值
+   *
+   * @return string
+   */
   string def() const;
 
   /**
-     * 字符串标示
-     */
+   * 字符串标示
+   */
   static const char *builtinTable[];
 
  protected:
@@ -199,16 +200,16 @@ typedef std::shared_ptr<Builtin> BuiltinPtr;
 class Vector : public Type {
  public:
   /**
-     * 构造函数
-     * @param ptr
-     */
+   * 构造函数
+   * @param ptr
+   */
   Vector(const TypePtr &ptr);
 
   /**
-     * 获取类型
-     *
-     * @return TypePtr&
-     */
+   * 获取类型
+   *
+   * @return TypePtr&
+   */
   TypePtr &getTypePtr() { return _ptr; }
 
  protected:
@@ -223,24 +224,24 @@ typedef std::shared_ptr<Vector> VectorPtr;
 class Map : public Type {
  public:
   /**
-     * 构造函数
-     * @param pleft
-     * @param pright
-     */
+   * 构造函数
+   * @param pleft
+   * @param pright
+   */
   Map(const TypePtr &pleft, const TypePtr &pright);
 
   /**
-     * 获取左类型
-     *
-     * @return TypePtr&
-     */
+   * 获取左类型
+   *
+   * @return TypePtr&
+   */
   TypePtr &getLeftTypePtr() { return _pleft; }
 
   /**
-     * 获取右类型
-     *
-     * @return TypePtr&
-     */
+   * 获取右类型
+   *
+   * @return TypePtr&
+   */
   TypePtr &getRightTypePtr() { return _pright; }
 
  protected:
@@ -256,77 +257,80 @@ typedef std::shared_ptr<Map> MapPtr;
 class TypeId : public GrammarBase {
  public:
   /**
-     * 构造函数
-     * @param ptr
-     * @param id
-     */
+   * 构造函数
+   * @param ptr
+   * @param id
+   */
   TypeId(const TypePtr &ptr, const string &id);
 
   /**
-     * 变量名称
-     *
-     * @return string
-     */
+   * 变量名称
+   *
+   * @return string
+   */
   string getId() const { return _id; }
 
   /**
-     * 变量类型
-     *
-     * @return Type*
-     */
+   * 变量类型
+   *
+   * @return Type*
+   */
   TypePtr &getTypePtr() { return _ptr; }
 
   /**
-     * 是否需要该参数
-     *
-     * @return bool
-     */
+   * 是否需要该参数
+   *
+   * @return bool
+   */
   bool isRequire() const { return _bRequire; }
 
   /**
-     * 设置必选字段
-     * @param tag
-     */
+   * 设置必选字段
+   * @param tag
+   */
   void setRequire(int tag);
 
   /**
-     * 设置可选字段
-     * 只有基本类型才有缺省值
-     */
+   * 设置可选字段
+   * 只有基本类型才有缺省值
+   */
   void setDefault(const string &def);
 
   void setNameSp(const string &s) { _namesp = s; }
   string NameSp() { return _namesp; }
 
-  /** 
-     *  
-     * 只有基本类型才有缺省值
-     */
+  void setCbName(const string &s) { _cb_name_ = s; }
+  string CbName() { return _cb_name_; }
+
+  /**
+   *
+   * 只有基本类型才有缺省值
+   */
   void disableDefault();
 
   /**
-     * 设置可选字段
-     * @param tag
-     */
+   * 设置可选字段
+   * @param tag
+   */
   void setOptional(int tag);
 
   /**
-     * tag标识
-     */
+   * tag标识
+   */
   int getTag() const { return _tag; }
 
   /**
-     * 缺省值
-     *
-     * @return string
-     */
+   * 缺省值
+   *
+   * @return string
+   */
   string def() const { return _default; }
 
   /**
-     * 是否有缺省值
-     *
-     * @return bool
-     */
+   * 是否有缺省值
+   *
+   * @return bool
+   */
   bool hasDefault() const { return _bHasDefault; }
 
  protected:
@@ -337,6 +341,7 @@ class TypeId : public GrammarBase {
   bool _bHasDefault;
   string _default;
   string _namesp;
+  string _cb_name_;
 
  public:
   int _size;
@@ -355,31 +360,31 @@ typedef std::shared_ptr<Namespace> NamespacePtr;
 class Container : virtual public GrammarBase {
  public:
   /**
-     * 构造函数
-     * @param id
-     */
+   * 构造函数
+   * @param id
+   */
   Container(const string &id) : _id(id) {}
 
   /**
-     * 生成名字空间
-     * @param id
-     *
-     * @return NamespacePtr
-     */
+   * 生成名字空间
+   * @param id
+   *
+   * @return NamespacePtr
+   */
   NamespacePtr createNamespace(const string &id);
 
   /**
-     * 获取ID
-     *
-     * @return string
-     */
+   * 获取ID
+   *
+   * @return string
+   */
   string getId() const { return _id; }
 
   /**
-     * 获取所有的名字空间
-     *
-     * @return vector<NamespacePtr>&
-     */
+   * 获取所有的名字空间
+   *
+   * @return vector<NamespacePtr>&
+   */
   vector<NamespacePtr> &getAllNamespacePtr() { return _ns; }
 
  protected:
@@ -394,24 +399,24 @@ typedef std::shared_ptr<Container> ContainerPtr;
 class Const : public GrammarBase {
  public:
   /**
-     * 
-     * @param tPtr
-     * @param cPtr
-     */
+   *
+   * @param tPtr
+   * @param cPtr
+   */
   Const(TypeIdPtr &tPtr, ConstGrammarPtr &cPtr) : _tPtr(tPtr), _cPtr(cPtr) {}
 
   /**
-     * 
-     * 
-     * @return TypePtr&
-     */
+   *
+   *
+   * @return TypePtr&
+   */
   TypeIdPtr &getTypeIdPtr() { return _tPtr; }
 
   /**
-     * 
-     * 
-     * @return ConstGrammarPtr
-     */
+   *
+   *
+   * @return ConstGrammarPtr
+   */
   ConstGrammarPtr getConstGrammarPtr() { return _cPtr; }
 
  protected:
@@ -428,41 +433,41 @@ class Enum : virtual public Container, virtual public Type {
   Enum(const string &id, const string &sid) : Container(id), _sid(sid) {}
 
   /**
-     * 添加成员变量
-     * @param ptid
-     */
+   * 添加成员变量
+   * @param ptid
+   */
   void addMember(const TypeIdPtr &ptr);
 
   /**
-     * 获取所有的成员变量
-     *
-     * @return vector<TypeIdPtr>&
-     */
+   * 获取所有的成员变量
+   *
+   * @return vector<TypeIdPtr>&
+   */
   vector<TypeIdPtr> &getAllMemberPtr() { return _members; }
 
   /**
-     * 获取结构的名称
-     *
-     * @return string
-     */
+   * 获取结构的名称
+   *
+   * @return string
+   */
   string getSid() const { return _sid; }
 
   /**
-     * 是否是简单类型
-     * 
-     * @return bool
-     */
+   * 是否是简单类型
+   *
+   * @return bool
+   */
   virtual bool isSimple() const { return true; }
 
  protected:
   /**
-     * 每个变量名称
-     */
+   * 每个变量名称
+   */
   vector<TypeIdPtr> _members;
 
   /**
-     * 包含名字的空间的名称
-    */
+   * 包含名字的空间的名称
+   */
   string _sid;
 };
 
@@ -476,35 +481,35 @@ typedef std::shared_ptr<Enum> EnumPtr;
 class Struct : virtual public Container, virtual public Type {
  public:
   /**
-     * 构造函数
-     * @param id
-     */
+   * 构造函数
+   * @param id
+   */
   Struct(const string &id, const string &sid) : Container(id), _sid(sid) {}
 
   /**
-     * 添加成员变量
-     * @param ptid
-     */
+   * 添加成员变量
+   * @param ptid
+   */
   void addTypeId(const TypeIdPtr &ptr);
 
   /**
-     * 获取所有的成员变量
-     *
-     * @return vector<TypeIdPtr>&
-     */
+   * 获取所有的成员变量
+   *
+   * @return vector<TypeIdPtr>&
+   */
   vector<TypeIdPtr> &getAllMemberPtr() { return _members; }
 
   /**
-     * 获取结构的名称
-     *
-     * @return string
-     */
+   * 获取结构的名称
+   *
+   * @return string
+   */
   string getSid() const { return _sid; }
 
   /**
-     * 增加小于memeber
-     * @param member
-     */
+   * 增加小于memeber
+   * @param member
+   */
   void addKey(const string &member);
 
   vector<string> getKey() { return _key; }
@@ -525,35 +530,35 @@ typedef std::shared_ptr<Struct> StructPtr;
 class RosParams : virtual public Container, virtual public Type {
  public:
   /**
-     * 构造函数
-     * @param id
-     */
+   * 构造函数
+   * @param id
+   */
   RosParams(const string &id, const string &sid) : Container(id), _sid(sid) {}
 
   /**
-     * 添加成员变量
-     * @param ptid
-     */
+   * 添加成员变量
+   * @param ptid
+   */
   void addTypeId(const TypeIdPtr &ptr);
 
   /**
-     * 获取所有的成员变量
-     *
-     * @return vector<TypeIdPtr>&
-     */
+   * 获取所有的成员变量
+   *
+   * @return vector<TypeIdPtr>&
+   */
   vector<TypeIdPtr> &getAllMemberPtr() { return _members; }
 
   /**
-     * 获取结构的名称
-     *
-     * @return string
-     */
+   * 获取结构的名称
+   *
+   * @return string
+   */
   string getSid() const { return _sid; }
 
   /**
-     * 增加小于memeber
-     * @param member
-     */
+   * 增加小于memeber
+   * @param member
+   */
   void addKey(const string &member);
 
   vector<string> getKey() { return _key; }
@@ -573,31 +578,32 @@ typedef std::shared_ptr<RosParams> RosParamsPtr;
 class ParamDecl : public GrammarBase {
  public:
   /**
-     * 构造
-     * @param typeIdPtr
-     * @param v
-     */
-  ParamDecl(const TypeIdPtr &typeIdPtr, bool v, bool k) : _typeIdPtr(typeIdPtr), _v(v), _k(k) {}
+   * 构造
+   * @param typeIdPtr
+   * @param v
+   */
+  ParamDecl(const TypeIdPtr &typeIdPtr, bool v, bool k)
+      : _typeIdPtr(typeIdPtr), _v(v), _k(k) {}
 
   /**
-     * 变量声明
-     *
-     * @return TypeIdPtr&
-     */
+   * 变量声明
+   *
+   * @return TypeIdPtr&
+   */
   TypeIdPtr &getTypeIdPtr() { return _typeIdPtr; }
 
   /**
-     * 是否是输出参数
-     *
-     * @return bool
-     */
+   * 是否是输出参数
+   *
+   * @return bool
+   */
   bool isOut() const { return _v; }
 
   /**
-     * 是否是需要路由的字段
-     *
-     * @return bool
-     */
+   * 是否是需要路由的字段
+   *
+   * @return bool
+   */
   bool isRouteKey() const { return _k; }
 
  protected:
@@ -615,37 +621,38 @@ typedef std::shared_ptr<ParamDecl> ParamDeclPtr;
 class Operation : public Container {
  public:
   /**
-     * 构造函数
-     * @param id
-     * @param typePtr
-     */
-  Operation(const string &id, const TypePtr &typePtr) : Container(id), _itag(0) {
+   * 构造函数
+   * @param id
+   * @param typePtr
+   */
+  Operation(const string &id, const TypePtr &typePtr)
+      : Container(id), _itag(0) {
     _retPtr = std::make_shared<TypeId>(typePtr, "_ret");
     _retPtr->setRequire(_itag);
   }
 
   /**
-     * 生成一个参数
-     * @param typeIdPtr
-     * @param v
-     * @param k
-     *
-     * @return ParamDeclPtr
-     */
+   * 生成一个参数
+   * @param typeIdPtr
+   * @param v
+   * @param k
+   *
+   * @return ParamDeclPtr
+   */
   ParamDeclPtr createParamDecl(const TypeIdPtr &typeIdPtr, bool v, bool k);
 
   /**
-     * 获取返回值类型
-     *
-     * @return TypePtr&
-     */
+   * 获取返回值类型
+   *
+   * @return TypePtr&
+   */
   TypeIdPtr &getReturnPtr() { return _retPtr; }
 
   /**
-     * 获取所有参数
-     *
-     * @return vector<ParamDeclPtr>&
-     */
+   * 获取所有参数
+   *
+   * @return vector<ParamDeclPtr>&
+   */
   vector<ParamDeclPtr> &getAllParamDeclPtr() { return _ps; }
 
  protected:
@@ -663,25 +670,25 @@ typedef std::shared_ptr<Operation> OperationPtr;
 class Interface : public Container {
  public:
   /**
-     * 构造
-     * @param id
-     */
+   * 构造
+   * @param id
+   */
   Interface(const string &id) : Container(id) {}
 
   /**
-     * 生成一个操作
-     * @param id
-     * @param typePtr
-     *
-     * @return OperationPtr
-     */
+   * 生成一个操作
+   * @param id
+   * @param typePtr
+   *
+   * @return OperationPtr
+   */
   OperationPtr createOperation(const string &id, const TypePtr &typePtr);
 
   /**
-     * 获取所有操作
-     *
-     * @return vector<OperationPtr>&
-     */
+   * 获取所有操作
+   *
+   * @return vector<OperationPtr>&
+   */
   vector<OperationPtr> &getAllOperationPtr() { return _ops; }
 
  protected:
@@ -698,92 +705,92 @@ typedef std::shared_ptr<Interface> InterfacePtr;
 class Namespace : public Container {
  public:
   /**
-     * 构造函数
-     * @param id
-     */
+   * 构造函数
+   * @param id
+   */
   Namespace(const string &id) : Container(id) {}
 
   /**
-     * 生成接口
-     * @param id
-     *
-     * @return InterfacePtr
-     */
+   * 生成接口
+   * @param id
+   *
+   * @return InterfacePtr
+   */
   InterfacePtr createInterface(const string &id);
 
   /**
-     * 生成结构
-     * @param id
-     *
-     * @return StructPtr
-     */
+   * 生成结构
+   * @param id
+   *
+   * @return StructPtr
+   */
   StructPtr createStruct(const string &id);
 
   /**
-     * 生成ros params
-     * @param id
-     *
-     * @return RosParamsPtr
-     */
+   * 生成ros params
+   * @param id
+   *
+   * @return RosParamsPtr
+   */
   RosParamsPtr createRosParams(const string &id);
 
   /**
-     * 生成枚举类型
-     * @param id
-     * 
-     * @return EnumPtr
-     */
+   * 生成枚举类型
+   * @param id
+   *
+   * @return EnumPtr
+   */
   EnumPtr createEnum(const string &id);
 
   /**
-     * 
-     * @param pPtr
-     * @param cPtr
-     * 
-     * @return ConstPtr
-     */
+   *
+   * @param pPtr
+   * @param cPtr
+   *
+   * @return ConstPtr
+   */
   ConstPtr createConst(TypeIdPtr &pPtr, ConstGrammarPtr &cPtr);
 
   /**
-     * 是否有接口
-     *
-     * @return bool
-     */
+   * 是否有接口
+   *
+   * @return bool
+   */
   bool hasInterface() const { return !_is.empty(); }
 
   /**
-     * 获取所有的接口
-     *
-     * @return vector<InterfacePtr>&
-     */
+   * 获取所有的接口
+   *
+   * @return vector<InterfacePtr>&
+   */
   vector<InterfacePtr> &getAllInterfacePtr() { return _is; }
 
   /**
-     * 获取所有的结构
-     *
-     * @return vector<StructPtr>&
-     */
+   * 获取所有的结构
+   *
+   * @return vector<StructPtr>&
+   */
   vector<StructPtr> &getAllStructPtr() { return _ss; }
 
   /**
-     * 获取所有的结构
-     *
-     * @return vector<RosParamsPtr>&
-     */
+   * 获取所有的结构
+   *
+   * @return vector<RosParamsPtr>&
+   */
   vector<RosParamsPtr> &getAllRosParamsPtr() { return _rs; }
 
   /**
-     * 生成枚举类型
-     * 
-     * @return vector<EnumPtr>&
-     */
+   * 生成枚举类型
+   *
+   * @return vector<EnumPtr>&
+   */
   vector<EnumPtr> &getAllEnumPtr() { return _es; }
 
   /**
-     * 常量类型
-     * 
-     * @return vector<ConstPtr>&
-     */
+   * 常量类型
+   *
+   * @return vector<ConstPtr>&
+   */
   vector<ConstPtr> &getAllConstPtr() { return _cs; }
 
  protected:
@@ -801,53 +808,53 @@ class Namespace : public Container {
 class Context {
  public:
   /**
-     * 构造函数
-     */
+   * 构造函数
+   */
   Context(const string &file) : _currline(1), _filename(file) {}
 
   /**
-     * 下一行
-     */
+   * 下一行
+   */
   void nextLine() { _currline++; }
 
   /**
-     * 目前的行
-     * 
-     * @return size_t
-     */
+   * 目前的行
+   *
+   * @return size_t
+   */
   size_t getCurrLine() { return _currline; }
 
   /**
-     * 当前文件名
-     * 
-     * @return string
-     */
+   * 当前文件名
+   *
+   * @return string
+   */
   string getFileName() { return _filename; }
 
   /**
-     * 添加include的文件
-     * @param incl
-     */
+   * 添加include的文件
+   * @param incl
+   */
   void addInclude(const string &incl);
 
   /**
-     * 添加属于这个文件的名字空间
-     * @param c
-     */
+   * 添加属于这个文件的名字空间
+   * @param c
+   */
   void addNamespacePtr(const NamespacePtr &c) { _namespaces.push_back(c); }
 
   /**
-     * 获取includes的文件
-     * 
-     * @return vector<string>
-     */
+   * 获取includes的文件
+   *
+   * @return vector<string>
+   */
   vector<string> getIncludes() { return _includes; }
 
   /**
-     * 获取名字空间
-     * 
-     * @return vector<NamespacePtr>
-     */
+   * 获取名字空间
+   *
+   * @return vector<NamespacePtr>
+   */
   vector<NamespacePtr> getNamespaces() { return _namespaces; }
 
  protected:

@@ -41,7 +41,8 @@ int isatty(int)
 %}
 
 gaussian_identifiers         [[:alpha:]_][[:alnum:]_]*
-gaussian_ros_namesp           (\/([a-zA-Z0-9_\.-]+\/)*[a-zA-Z0-9_\.-]+)
+gaussian_ros_namesp          (\/([a-zA-Z0-9_\.-]+\/)*[a-zA-Z0-9_\.-]+)
+gaussian_param_cb            (\ cb_*[a-zA-Z0-9_\.-]+)
 gaussian_anychar             .
 gaussian_const_int           (\+|-)?((0[0-7]+)|(0x[[:xdigit:]]+)|([[:digit:]]+))
 gaussian_float_literal       (\+|-)?(([[:digit:]]*\.[[:digit:]]+)|([[:digit:]]+\.))
@@ -182,6 +183,13 @@ gaussian_const_float         (({gaussian_float_literal}{gaussian_float_exp}?)|((
     ident->v            = yytext;
     yylval              = ident;
     return GAUSSIAN_ROS_NAMESPACE;
+}
+
+{gaussian_param_cb}    {
+    StringGrammarPtr ident  = std::make_shared<StringGrammar>();
+    ident->v            = yytext;
+    yylval              = ident;
+    return GAUSSIAN_PARAM_CALLBACK;
 }
 
 {gaussian_identifiers}[[:space:]]*"(" {

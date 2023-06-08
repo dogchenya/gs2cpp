@@ -59,6 +59,8 @@ ros_params ScrubberParameters
     bool water_level_and_speed_fitting false;           // 新水量自适应开关
     bool front_rolling_brush_reverse false;
     bool rear_rolling_brush_reverse false;
+    bool always_cleaning_program false /strategy/device_controller/always_cleaning_program cb_always_cleaning_prog;  // 全开模式
+
 
     int rear_device_type 0;                             // 后部设备类型 0: 尘推, 1: 吸水扒
     int dust_push_type 0;                               // 尘推类型 0: 普通尘推, 1: 滚动尘推
@@ -248,8 +250,9 @@ ros_params ScrubberParameters
     double device_operation_timeout_time 20.0;
 
     string sensor_type "" sensor_type;
+    string forbiden_areas "" /strategy/device_controller/forbiden_areas cb_forbiden_areas;  // 禁洗区域
 
-    vector<int>() water_level_setting "20,60,100";                     // 喷水量等级设置
+    vector<int>() water_level_setting "20,60,100" cb_water_level_setting;                     // 喷水量等级设置
     vector<int>() fan_level_setting "20,60,100";                       // 吸风等级设置
     vector<int>() dust_push_spin_level_setting "20,60,100";            // 尘推旋转等级设置
     vector<int>() dust_push_clean_spin_level_setting "20,60,100";      // 尘推自洁旋转等级设置
